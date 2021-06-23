@@ -1,9 +1,10 @@
 import React from 'react'
+import '../../../../css/app.scss'
 
 const GifCard = ( { gifObj } ) => {
   return (
-    <div className="ui card" >
-      <img src={gifObj.images.fixed_height.url} alt="gif"/>
+    <div className="ui card">
+      <img className="align-center" style={{width: 500}} src={gifObj.images.fixed_height.url} alt="gif"/>
     </div>
   )
 }

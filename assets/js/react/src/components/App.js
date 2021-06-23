@@ -1,15 +1,15 @@
-import React from 'react'
-import SearchBar from './SearchBar'
-import GifCard from './GifCard'
+import React from 'react';
+import SearchBar from './SearchBar';
+import GifCard from './GifCard';
 
 class App extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props);
     this.state = {
       searchTerm: "",
       gifs: []
-    }
-  }
+    };
+  };
 
   changeSearchTerm = (event) => {
     this.setState( {
@@ -28,8 +28,9 @@ class App extends React.Component {
         searchTerm: this.state.searchTerm
       })
     })
-      .then( resp => resp.json() )
-      .then( resp => this.setState( { gifs: resp.data } ) )
+      .then( function(response){
+        return response.json()
+      }).then(response => this.setState({ gifs: JSON.parse(response).data}))
   }
 
   render() {
