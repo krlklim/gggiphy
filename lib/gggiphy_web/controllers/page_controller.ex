@@ -26,9 +26,7 @@ defmodule GggiphyWeb.PageController do
 
   def get_gifs(conn, params) do
     cond do
-    (params["searchTerm"]), Enum.random(1..length(Gggiphy.Gifs.list_gifs)-1)
-                            |> Gggiphy.Gifs.get_gif_by_name!
-                            |> Enum.at == nil ->
+      Enum.at(Gggiphy.Gifs.get_gif_by_name!(params["searchTerm"]), Enum.random(1..length(Gggiphy.Gifs.list_gifs)-1)) == nil ->
         GggiphyWeb.PageController.fetch_gifs(conn, params)
       Enum.at(Gggiphy.Gifs.get_gif_by_name!(params["searchTerm"]), Enum.random(1..length(Gggiphy.Gifs.list_gifs)-1)) != nil && NaiveDateTime.diff(NaiveDateTime.utc_now, Enum.at(Gggiphy.Gifs.get_gif_by_name!(params["searchTerm"]), Enum.random(1..length(Gggiphy.Gifs.list_gifs)-1)).ttl) > 60
         GggiphyWeb.PageController.fetch_gifs(conn, params)
