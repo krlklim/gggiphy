@@ -4,7 +4,7 @@ import '../../../../css/app.scss'
 const GifCard = ( { gifObj } ) => {
   return (
     <div className="ui card">
-      <img className="align-center" style={{width: 500}} src={gifObj.images.fixed_height.url} alt="gif"/>
+      <img className="align-center" style={{width: 500}} src={gifObj.url} alt="gif"/>
     </div>
   )
 }

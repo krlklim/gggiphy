@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SearchBar = ( { searchTerm, changeSearchTerm, getGifs } ) => {
+const SearchBar = ( { searchTerm, changeSearchTerm, getGifs, refreshGifs } ) => {
   return (
     <div>
       <input
@@ -14,7 +14,7 @@ const SearchBar = ( { searchTerm, changeSearchTerm, getGifs } ) => {
       <input
         type="submit"
         value="Hit Me with Some GIFs!"
-        onClick={getGifs}
+        onClick={ () => { refreshGifs(); getGifs() } }
       />
     </div>
   )

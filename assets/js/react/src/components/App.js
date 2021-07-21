@@ -29,9 +29,13 @@ class App extends React.Component {
       })
     })
       .then( function(response){
-        return response.json()
-      }).then(response => this.setState({ gifs: JSON.parse(response).data}))
+        return response.clone().json()
+      }).then(response => this.setState({ gifs: [...this.state.gifs, JSON.parse(response).downsized]}))
   }
+
+  refresh = () => {
+    this.setState({gifs: []});
+  };
 
   render() {
     return(
@@ -40,11 +44,12 @@ class App extends React.Component {
           searchTerm={this.state.searchTerm}
           changeSearchTerm={this.changeSearchTerm}
           getGifs={this.getGifs}
+          refreshGifs={this.refresh}
         />
 
         {
           this.state.gifs.map( gifObj =>
-            <GifCard key={gifObj.id} gifObj={gifObj} />
+            <GifCard key={gifObj.url} gifObj={gifObj} />
           )
         }
 
