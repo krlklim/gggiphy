@@ -37,6 +37,16 @@ defmodule Gggiphy.Gifs do
   """
   def get_gif!(id), do: Repo.get!(Gif, id)
 
+  def get_gif_by_name!(name) do
+    query = from(Gif, where: [name: ^name])
+    Repo.all(query)
+  end
+
+  def delete_all_records!(name) do
+    query = from(Gif, where: [name: ^name])
+    Repo.delete_all(query)
+  end
+
   @doc """
   Creates a gif.
 

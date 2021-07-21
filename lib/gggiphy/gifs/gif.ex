@@ -3,7 +3,9 @@ defmodule Gggiphy.Gifs.Gif do
   import Ecto.Changeset
 
   schema "gifs" do
-    field :body, :string
+    field :ttl, :naive_datetime
+    field :url, :string
+    field :images, :map
     field :name, :string
 
     timestamps()
@@ -12,7 +14,7 @@ defmodule Gggiphy.Gifs.Gif do
   @doc false
   def changeset(gif, attrs) do
     gif
-    |> cast(attrs, [:name, :body])
-    |> validate_required([:name, :body])
+    |> cast(attrs, [:ttl, :url, :images, :name])
+    |> validate_required([:ttl, :url, :images, :name])
   end
 end
