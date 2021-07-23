@@ -42,7 +42,7 @@ defmodule Gggiphy.Gifs do
     Repo.all(query)
   end
 
-  def delete_all_records!(name) do
+  def delete_all_records(name) do
     query = from(Gif, where: [name: ^name])
     Repo.delete_all(query)
   end
