@@ -12,7 +12,7 @@ defmodule GggiphyWeb.PageController do
 
     {:ok, json} = Gggiphy.Client.gif_response(conn, params)
 
-    error =
+    status =
       Enum.reduce_while(json["data"], :ok, fn gif_url, acc ->
         case Gggiphy.Gifs.create_gif(%{
                name: params["searchTerm"],
@@ -21,7 +21,7 @@ defmodule GggiphyWeb.PageController do
                images: gif_url["images"]
              }) do
           {:ok, _value} ->
-            {:count, acc}
+            {:cont, acc}
 
           {:error, value} ->
             {:halt, {:error, value}}
@@ -29,7 +29,7 @@ defmodule GggiphyWeb.PageController do
       end)
 
     cond do
-      error == :error ->
+      status == :error ->
         json(
           conn,
           Jason.encode!(%{
@@ -45,14 +45,16 @@ defmodule GggiphyWeb.PageController do
   end
 
   def get_gifs(conn, params) do
+    random_gif = Enum.random(Gggiphy.Gifs.get_gif_by_name!(params["searchTerm"]))
+
     cond do
-      Enum.random(Gggiphy.Gifs.get_gif_by_name!(params["searchTerm"])) == nil ->
+      random_gif == nil ->
         fetch_gifs(conn, params)
 
-        Enum.random(Gggiphy.Gifs.get_gif_by_name!(params["searchTerm"])) != nil &&
+        random_gif != nil &&
           NaiveDateTime.diff(
             NaiveDateTime.utc_now(),
-            Enum.random(Gggiphy.Gifs.get_gif_by_name!(params["searchTerm"]).ttl)
+            random_gif.ttl
           ) > 60
 
         fetch_gifs(conn, params)
