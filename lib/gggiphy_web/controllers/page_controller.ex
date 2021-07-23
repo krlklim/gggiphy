@@ -57,7 +57,7 @@ defmodule GggiphyWeb.PageController do
             random_gif.ttl
           ) > 60
 
-        fetch_gifs(conn, params, random_gif)
+        fetch_gifs(conn, params, nil)
 
       true ->
         render_gifs(conn, params, random_gif)
