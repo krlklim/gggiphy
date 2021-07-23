@@ -7,7 +7,7 @@ defmodule GggiphyWeb.PageController do
     render(conn, "index.html")
   end
 
-  defp fetch_gifs(conn, params) do
+  defp fetch_gifs(conn, params, _random_gif) do
     Gggiphy.Gifs.delete_all_records(params["searchTerm"])
 
     {:ok, json} = Gggiphy.Client.gif_response(conn, params)
@@ -40,7 +40,7 @@ defmodule GggiphyWeb.PageController do
         )
 
       true ->
-        render_gifs(conn, params)
+        render_gifs(conn, params, _random_gif)
     end
   end
 
@@ -49,7 +49,7 @@ defmodule GggiphyWeb.PageController do
 
     cond do
       random_gif == nil ->
-        fetch_gifs(conn, params)
+        fetch_gifs(conn, params, random_gif)
 
         random_gif != nil &&
           NaiveDateTime.diff(
@@ -57,19 +57,28 @@ defmodule GggiphyWeb.PageController do
             random_gif.ttl
           ) > 60
 
-        fetch_gifs(conn, params)
+        fetch_gifs(conn, params, nil)
 
       true ->
-        render_gifs(conn, params)
+        render_gifs(conn, params, nil)
     end
   end
 
-  defp render_gifs(conn, params) do
-    json(
-      conn,
-      Jason.encode!(
-        Map.get(Enum.random(Gggiphy.Gifs.get_gif_by_name!(params["searchTerm"])), :images)
-      )
-    )
+  defp render_gifs(conn, params, _random_gif) do
+    cond do
+      _random_gif != nil ->
+        json(
+          conn,
+          Jason.encode!(Map.get(Enum.random(_random_gif), :images))
+        )
+
+      true ->
+        json(
+          conn,
+          Jason.encode!(
+            Map.get(Enum.random(Gggiphy.Gifs.get_gif_by_name!(params["searchTerm"])), :images)
+          )
+        )
+    end
   end
 end
