@@ -75,6 +75,7 @@ defmodule GggiphyWeb.FetchControllerTest do
     test "deletes chosen fetch", %{conn: conn, fetch: fetch} do
       conn = delete(conn, Routes.fetch_path(conn, :delete, fetch))
       assert redirected_to(conn) == Routes.fetch_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.fetch_path(conn, :show, fetch))
       end

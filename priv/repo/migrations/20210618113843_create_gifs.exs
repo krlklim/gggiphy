@@ -10,6 +10,5 @@ defmodule Gggiphy.Repo.Migrations.CreateGifs do
 
       timestamps()
     end
-
   end
 end

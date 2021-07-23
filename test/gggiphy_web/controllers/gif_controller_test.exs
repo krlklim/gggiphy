@@ -75,6 +75,7 @@ defmodule GggiphyWeb.GifControllerTest do
     test "deletes chosen gif", %{conn: conn, gif: gif} do
       conn = delete(conn, Routes.gif_path(conn, :delete, gif))
       assert redirected_to(conn) == Routes.gif_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.gif_path(conn, :show, gif))
       end
