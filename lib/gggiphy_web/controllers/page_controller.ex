@@ -57,10 +57,10 @@ defmodule GggiphyWeb.PageController do
             random_gif.ttl
           ) > 60
 
-        fetch_gifs(conn, params, nil)
+        fetch_gifs(conn, params, random_gif)
 
       true ->
-        render_gifs(conn, params, nil)
+        render_gifs(conn, params, random_gif)
     end
   end
 
@@ -69,7 +69,7 @@ defmodule GggiphyWeb.PageController do
       _random_gif != nil ->
         json(
           conn,
-          Jason.encode!(Map.get(Enum.random(_random_gif), :images))
+          Jason.encode!(Map.get(_random_gif, :images))
         )
 
       true ->
